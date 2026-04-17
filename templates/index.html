@@ -1,0 +1,51 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Mini Hotel Assistant</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 2rem;
+        }
+
+        #chat {
+            border: 1px solid #ddd;
+            padding: 1rem;
+            height: 400px;
+            overflow: auto;
+        }
+
+        .msg {
+            margin-bottom: 0.75rem;
+        }
+
+        .user {
+            color: #0b5;
+        }
+
+        .assistant {
+            color: #06c;
+        }
+
+        #controls {
+            margin-top: 1rem;
+        }
+    </style>
+</head>
+
+<body>
+    <h1>Mini Hotel Assistant</h1>
+    <div id="chat" aria-live="polite"></div>
+
+    <div id="controls">
+        <input id="input" type="text" placeholder="Ask about the hotel..." style="width:70%" />
+        <button id="send">Send</button>
+    </div>
+
+    <script src="/Users/lait-zet/Desktop/Ai-chatbot-rag/static/chat.js"></script>
+</body>
+
+</html>

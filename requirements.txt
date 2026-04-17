@@ -1,0 +1,12 @@
+fastapi
+uvicorn
+langchain
+openai
+faiss-cpu
+pypdf
+
+# UI templates
+jinja2
+
+# Ollama integration (used by main.py)
+langchain-ollama
