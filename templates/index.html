@@ -1,51 +1,256 @@
 <!doctype html>
 <html lang="en">
-
 <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <title>Mini Hotel Assistant</title>
+    <title>Mistral Assistant</title>
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
     <style>
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
         body {
-            font-family: Arial, sans-serif;
-            margin: 2rem;
+            font-family: 'Inter', sans-serif;
+            background: linear-gradient(135deg, #090a0f 0%, #171033 50%, #031424 100%);
+            background-size: cover;
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #fff;
+        }
+
+        .chat-container {
+            width: 100%;
+            max-width: 480px;
+            height: 85vh;
+            min-height: 500px;
+            /* Glassmorphism */
+            background: rgba(255, 255, 255, 0.05);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 24px;
+            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.5);
+            display: flex;
+            flex-direction: column;
+            overflow: hidden;
+            position: relative;
+        }
+
+        .chat-header {
+            padding: 20px;
+            background: rgba(0, 0, 0, 0.2);
+            border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+
+        .avatar-container {
+            width: 45px;
+            height: 45px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, #00f2fe 0%, #4facfe 100%);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.5rem;
+            box-shadow: 0 4px 10px rgba(79, 172, 254, 0.3);
+        }
+
+        .header-info h1 {
+            font-size: 1.1rem;
+            font-weight: 600;
+            margin-bottom: 3px;
+            letter-spacing: 0.5px;
+        }
+
+        .status {
+            font-size: 0.8rem;
+            color: #4facfe;
+            display: flex;
+            align-items: center;
+            gap: 5px;
+        }
+
+        .status-dot {
+            width: 8px;
+            height: 8px;
+            background-color: #4facfe;
+            border-radius: 50%;
+            box-shadow: 0 0 8px #4facfe;
         }
 
         #chat {
-            border: 1px solid #ddd;
-            padding: 1rem;
-            height: 400px;
-            overflow: auto;
+            flex-grow: 1;
+            padding: 20px;
+            overflow-y: auto;
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+            scroll-behavior: smooth;
+        }
+
+        #chat::-webkit-scrollbar {
+            width: 6px;
+        }
+
+        #chat::-webkit-scrollbar-thumb {
+            background-color: rgba(255, 255, 255, 0.2);
+            border-radius: 10px;
         }
 
         .msg {
-            margin-bottom: 0.75rem;
+            max-width: 80%;
+            padding: 12px 16px;
+            border-radius: 18px;
+            font-size: 0.95rem;
+            line-height: 1.4;
+            word-wrap: break-word;
+            animation: fadeIn 0.3s ease-out;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
         }
 
         .user {
-            color: #0b5;
+            align-self: flex-end;
+            background: rgba(255, 255, 255, 0.1);
+            color: #edf2f7;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-bottom-right-radius: 4px;
         }
 
         .assistant {
-            color: #06c;
+            align-self: flex-start;
+            background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);
+            color: #fff;
+            border-bottom-left-radius: 4px;
+            box-shadow: 0 4px 15px rgba(0, 242, 254, 0.2);
         }
 
         #controls {
-            margin-top: 1rem;
+            padding: 20px;
+            background: rgba(0, 0, 0, 0.2);
+            border-top: 1px solid rgba(255, 255, 255, 0.05);
+            display: flex;
+            gap: 10px;
+        }
+
+        #input {
+            flex-grow: 1;
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            color: #fff;
+            padding: 14px 18px;
+            border-radius: 30px;
+            font-size: 0.95rem;
+            outline: none;
+            transition: all 0.3s ease;
+        }
+
+        #input::placeholder {
+            color: rgba(255, 255, 255, 0.4);
+        }
+
+        #input:focus {
+            background: rgba(255, 255, 255, 0.1);
+            border-color: #4facfe;
+        }
+
+        #send {
+            background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);
+            border: none;
+            width: 48px;
+            height: 48px;
+            border-radius: 50%;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            box-shadow: 0 4px 15px rgba(0, 242, 254, 0.3);
+            transition: transform 0.2s ease, box-shadow 0.2s ease;
+        }
+
+        #send:hover {
+            transform: scale(1.05);
+            box-shadow: 0 6px 20px rgba(0, 242, 254, 0.4);
+        }
+        
+        #send:active {
+            transform: scale(0.95);
+        }
+
+        .send-icon {
+            width: 20px;
+            height: 20px;
+            fill: #fff;
+        }
+
+        /* Ambient glowing orbs */
+        .orb {
+            position: absolute;
+            border-radius: 50%;
+            filter: blur(80px);
+            z-index: -1;
+        }
+        
+        .orb-1 {
+            width: 300px;
+            height: 300px;
+            background: rgba(79, 172, 254, 0.2);
+            top: -100px;
+            left: -100px;
+        }
+
+        .orb-2 {
+            width: 400px;
+            height: 400px;
+            background: rgba(138, 43, 226, 0.15);
+            bottom: -150px;
+            right: -150px;
         }
     </style>
 </head>
-
 <body>
-    <h1>Mini Hotel Assistant</h1>
-    <div id="chat" aria-live="polite"></div>
+    <div class="orb orb-1"></div>
+    <div class="orb orb-2"></div>
 
-    <div id="controls">
-        <input id="input" type="text" placeholder="Ask about the hotel..." style="width:70%" />
-        <button id="send">Send</button>
+    <div class="chat-container">
+        <div class="chat-header">
+            <div class="avatar-container">
+                ✨
+            </div>
+            <div class="header-info">
+                <h1>Mistral Assistant</h1>
+                <div class="status">
+                    <div class="status-dot"></div> Online
+                </div>
+            </div>
+        </div>
+
+        <div id="chat" aria-live="polite">
+            <div class="msg assistant">Hello! I'm your Mistral-powered AI assistant. How can I help you today?</div>
+        </div>
+
+        <div id="controls">
+            <input id="input" type="text" placeholder="Type your message..." autocomplete="off" />
+            <button id="send" aria-label="Send">
+                <svg class="send-icon" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M2.01 21L23 12 2.01 3 2 10l15 2-15 2z"/>
+                </svg>
+            </button>
+        </div>
     </div>
 
-    <script src="/Users/lait-zet/Desktop/Ai-chatbot-rag/static/chat.js"></script>
+    <!-- Ensure path matches project structure properly -->
+    <script src="/static/chat.js"></script>
 </body>
-
 </html>

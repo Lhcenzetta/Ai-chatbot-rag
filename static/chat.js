@@ -5,7 +5,7 @@ const sendBtn = document.getElementById('send');
 function appendMessage(who, text) {
     const div = document.createElement('div');
     div.className = 'msg ' + (who === 'you' ? 'user' : 'assistant');
-    div.textContent = (who === 'you' ? 'You: ' : 'Assistant: ') + text;
+    div.textContent = text;
     chatEl.appendChild(div);
     chatEl.scrollTop = chatEl.scrollHeight;
 }
