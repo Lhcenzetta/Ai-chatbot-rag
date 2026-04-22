@@ -10,7 +10,7 @@ function appendMessage(who, text) {
     chatEl.scrollTop = chatEl.scrollHeight;
 }
 
-async function send() {
+async function sendMessage() {
     const text = inputEl.value.trim();
     if (!text) return;
     appendMessage('you', text);
@@ -29,7 +29,7 @@ async function send() {
     }
 }
 
-sendBtn.addEventListener('click', send);
+sendBtn.addEventListener('click', sendMessage);
 inputEl.addEventListener('keydown', (e) => {
-    if (e.key === 'Enter') send();
+    if (e.key === 'Enter') sendMessage();
 });

@@ -22,7 +22,7 @@ def get_response(query: str) -> str:
                         """
 
         messages = [
-                SystemMessage(content="You are a polite and professional hotel concierge assistant."),
+                SystemMessage(content="You are a polite and professional  assistant."),
                 HumanMessage(content=prompt),
         ]
 
