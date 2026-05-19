@@ -29,15 +29,7 @@ else:
     retriever = None
 
 def get_response(query: str) -> str:
-    """Return the assistant response for a given user query using RAG.
-    
-    Rules:
-    - Be clear and professional
-    - Give concise answers
-    - If the answer is not in the data, say: "I don't have that information"
-    - Do not invent information
-    """
-    
+
     context = ""
     if retriever:
         relevant_docs = retriever.invoke(query)

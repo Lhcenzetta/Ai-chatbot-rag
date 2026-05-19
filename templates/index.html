@@ -1,259 +1,1060 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <title>Atlas Insurance Assistant</title>
-    <!-- Google Fonts -->
-    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600&display=swap" rel="stylesheet">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Atlas Insurance - Protecting What Matters Most</title>
+    <meta name="description" content="Secure your family's future with custom plans, easy claim filing, and 24/7 dedicated support from Atlas Insurance.">
+    <!-- Google Fonts Inter -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    
     <style>
+        /* CSS Variables */
         :root {
-            --primary-gradient: linear-gradient(135deg, #1e3a8a 0%, #3b82f6 100%);
-            --bg-gradient: radial-gradient(circle at top right, #0f172a, #020617);
-            --glass-bg: rgba(255, 255, 255, 0.03);
-            --glass-border: rgba(255, 255, 255, 0.1);
-            --accent: #60a5fa;
+            --primary: #6366F1;          /* Primary Indigo */
+            --primary-dark: #4F46E5;     /* Darker Indigo for Hover */
+            --accent-bg: #EEF0FD;        /* Light Indigo Tint */
+            --green-online: #22C55E;     /* Online Green Badge */
+            --dots-color: #A5B4FC;       /* Typing Indicator Dot */
+            --bg-color: #F7F8FC;         /* Full Page Background */
+            --chat-bg: #FFFFFF;
+            --border-color: #E5E7EB;
+            --text-primary: #1E1E2E;     /* Text Color primary */
+            --text-muted: #9CA3AF;       /* Muted gray */
+            --font-family: 'Inter', system-ui, -apple-system, sans-serif;
+            --transition-normal: 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+            --transition-fast: 0.15s cubic-bezier(0.4, 0, 0.2, 1);
+            --shadow-md: 0 4px 20px rgba(99, 102, 241, 0.08);
+            --shadow-lg: 0 10px 30px rgba(0, 0, 0, 0.08);
         }
 
+        /* Reset and Core Page Styling */
         * {
-            box-sizing: border-box;
             margin: 0;
             padding: 0;
+            box-sizing: border-box;
         }
 
-        body {
-            font-family: 'Outfit', sans-serif;
-            background: var(--bg-gradient);
+        body, html {
+            font-family: var(--font-family);
+            background-color: var(--bg-color);
+            color: var(--text-primary);
             min-height: 100vh;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            color: #f8fafc;
-            overflow: hidden;
-        }
-
-        .chat-container {
-            width: 100%;
-            max-width: 500px;
-            height: 90vh;
-            max-height: 800px;
-            background: var(--glass-bg);
-            backdrop-filter: blur(16px);
-            -webkit-backdrop-filter: blur(16px);
-            border: 1px solid var(--glass-border);
-            border-radius: 28px;
-            box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5);
-            display: flex;
-            flex-direction: column;
-            overflow: hidden;
-            position: relative;
-            z-index: 10;
-        }
-
-        .chat-header {
-            padding: 24px;
-            background: rgba(15, 23, 42, 0.6);
-            border-bottom: 1px solid var(--glass-border);
-            display: flex;
-            align-items: center;
-            gap: 16px;
-        }
-
-        .avatar-container {
-            width: 48px;
-            height: 48px;
-            border-radius: 14px;
-            background: var(--primary-gradient);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 1.5rem;
-            box-shadow: 0 8px 16px rgba(59, 130, 246, 0.25);
-            transform: rotate(-5deg);
-        }
-
-        .header-info h1 {
-            font-size: 1.2rem;
-            font-weight: 600;
-            margin-bottom: 2px;
-            letter-spacing: -0.02em;
-        }
-
-        .status {
-            font-size: 0.85rem;
-            color: var(--accent);
-            display: flex;
-            align-items: center;
-            gap: 6px;
-            opacity: 0.9;
-        }
-
-        .status-dot {
-            width: 8px;
-            height: 8px;
-            background-color: #10b981;
-            border-radius: 50%;
-            box-shadow: 0 0 12px #10b981;
-        }
-
-        #chat {
-            flex-grow: 1;
-            padding: 24px;
-            overflow-y: auto;
-            display: flex;
-            flex-direction: column;
-            gap: 16px;
-            scroll-behavior: smooth;
-        }
-
-        #chat::-webkit-scrollbar {
-            width: 5px;
-        }
-
-        #chat::-webkit-scrollbar-thumb {
-            background-color: rgba(255, 255, 255, 0.1);
-            border-radius: 10px;
-        }
-
-        .msg {
-            max-width: 85%;
-            padding: 14px 18px;
-            border-radius: 20px;
-            font-size: 0.95rem;
             line-height: 1.5;
-            word-wrap: break-word;
-            position: relative;
-            animation: slideIn 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+            -webkit-font-smoothing: antialiased;
         }
 
-        @keyframes slideIn {
-            from { opacity: 0; transform: translateY(20px) scale(0.95); }
-            to { opacity: 1; transform: translateY(0) scale(1); }
+        /* Mock Website Content Layout */
+        .site-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 24px;
         }
 
-        .user {
-            align-self: flex-end;
-            background: rgba(255, 255, 255, 0.08);
-            color: #fff;
-            border: 1px solid rgba(255, 255, 255, 0.1);
-            border-bottom-right-radius: 4px;
-        }
-
-        .assistant {
-            align-self: flex-start;
-            background: var(--primary-gradient);
-            color: #fff;
-            border-bottom-left-radius: 4px;
-            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.15);
-        }
-
-        #controls {
-            padding: 24px;
-            background: rgba(15, 23, 42, 0.4);
-            border-top: 1px solid var(--glass-border);
+        header.site-header {
             display: flex;
-            gap: 12px;
+            align-items: center;
+            justify-content: space-between;
+            height: 80px;
+            border-bottom: 1px solid var(--border-color);
         }
 
-        #input {
-            flex-grow: 1;
-            background: rgba(255, 255, 255, 0.03);
-            border: 1px solid var(--glass-border);
-            color: #fff;
-            padding: 16px 20px;
+        .logo {
+            font-size: 20px;
+            font-weight: 700;
+            color: var(--primary);
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .logo-dot {
+            width: 10px;
+            height: 10px;
+            background-color: var(--primary);
+            border-radius: 50%;
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 32px;
+            list-style: none;
+        }
+
+        .nav-links a {
+            text-decoration: none;
+            color: var(--text-primary);
+            font-weight: 500;
+            font-size: 14px;
+            transition: color var(--transition-fast);
+        }
+
+        .nav-links a:hover {
+            color: var(--primary);
+        }
+
+        .cta-btn-nav {
+            background-color: var(--primary);
+            color: white;
+            padding: 10px 20px;
+            border-radius: 20px;
+            text-decoration: none;
+            font-weight: 600;
+            font-size: 14px;
+            transition: background-color var(--transition-fast);
+        }
+
+        .cta-btn-nav:hover {
+            background-color: var(--primary-dark);
+        }
+
+        /* Hero Section */
+        .hero {
+            padding: 100px 0 60px 0;
+            text-align: center;
+            max-width: 800px;
+            margin: 0 auto;
+        }
+
+        .hero h1 {
+            font-size: 48px;
+            font-weight: 800;
+            letter-spacing: -0.02em;
+            margin-bottom: 20px;
+            line-height: 1.15;
+        }
+
+        .hero p {
+            font-size: 18px;
+            color: var(--text-muted);
+            margin-bottom: 40px;
+        }
+
+        .hero-actions {
+            display: flex;
+            justify-content: center;
+            gap: 16px;
+        }
+
+        .btn-primary {
+            background-color: var(--primary);
+            color: white;
+            padding: 14px 28px;
+            border-radius: 24px;
+            text-decoration: none;
+            font-weight: 600;
+            box-shadow: 0 4px 14px rgba(99, 102, 241, 0.3);
+            transition: all var(--transition-fast);
+        }
+
+        .btn-primary:hover {
+            background-color: var(--primary-dark);
+            transform: translateY(-2px);
+        }
+
+        .btn-secondary {
+            background-color: white;
+            color: var(--text-primary);
+            border: 1px solid var(--border-color);
+            padding: 14px 28px;
+            border-radius: 24px;
+            text-decoration: none;
+            font-weight: 600;
+            transition: all var(--transition-fast);
+        }
+
+        .btn-secondary:hover {
+            background-color: var(--bg-color);
+            transform: translateY(-2px);
+        }
+
+        /* Features Section */
+        .features-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 24px;
+            margin-top: 40px;
+            margin-bottom: 100px;
+        }
+
+        .feature-card {
+            background-color: white;
+            padding: 32px;
             border-radius: 16px;
-            font-size: 1rem;
-            outline: none;
-            transition: all 0.3s ease;
+            border: 1px solid var(--border-color);
+            box-shadow: var(--shadow-md);
+            transition: transform var(--transition-fast);
         }
 
-        #input:focus {
-            background: rgba(255, 255, 255, 0.06);
-            border-color: var(--accent);
-            box-shadow: 0 0 0 4px rgba(59, 130, 246, 0.1);
+        .feature-card:hover {
+            transform: translateY(-4px);
         }
 
-        #send {
-            background: var(--primary-gradient);
-            border: none;
+        .card-icon {
+            width: 44px;
+            height: 44px;
+            background-color: var(--accent-bg);
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--primary);
+            margin-bottom: 20px;
+        }
+
+        .feature-card h3 {
+            font-size: 18px;
+            font-weight: 700;
+            margin-bottom: 12px;
+        }
+
+        .feature-card p {
+            font-size: 14px;
+            color: var(--text-muted);
+        }
+
+        /* FLOATING ACTION BUTTON (FAB) */
+        .chat-fab-container {
+            position: fixed;
+            bottom: 24px;
+            right: 24px;
+            z-index: 100;
+        }
+
+        .chat-fab {
             width: 56px;
             height: 56px;
-            border-radius: 16px;
+            border-radius: 50%;
+            background-color: var(--primary);
+            border: none;
+            outline: none;
             cursor: pointer;
             display: flex;
             align-items: center;
             justify-content: center;
-            box-shadow: 0 8px 16px rgba(59, 130, 246, 0.3);
-            transition: all 0.3s ease;
+            box-shadow: 0 8px 24px rgba(99, 102, 241, 0.35);
+            transition: all var(--transition-normal);
+            position: relative;
         }
 
-        #send:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 12px 24px rgba(59, 130, 246, 0.4);
+        .chat-fab:hover {
+            transform: scale(1.08);
+            background-color: var(--primary-dark);
         }
 
-        #send:active {
-            transform: scale(0.95);
-        }
-
-        .send-icon {
-            width: 24px;
-            height: 24px;
-            fill: #fff;
-        }
-
-        /* Ambient glowing background */
-        .glow {
+        .chat-fab-badge {
             position: absolute;
-            width: 60vw;
-            height: 60vw;
+            top: -2px;
+            right: -2px;
+            width: 12px;
+            height: 12px;
+            background-color: var(--green-online);
             border-radius: 50%;
-            background: radial-gradient(circle, rgba(59, 130, 246, 0.15) 0%, transparent 70%);
-            top: -20%;
-            right: -10%;
-            z-index: 1;
+            border: 2px solid white;
+            animation: badge-pulse 2s infinite;
+        }
+
+        /* FLOATING CHAT PANEL */
+        .chat-panel {
+            position: fixed;
+            bottom: 88px;
+            right: 24px;
+            width: 340px;
+            height: 520px;
+            max-height: calc(100vh - 120px);
+            background-color: var(--chat-bg);
+            border-radius: 20px;
+            border: 1px solid var(--border-color);
+            box-shadow: var(--shadow-lg);
+            overflow: hidden;
+            display: flex;
+            flex-direction: column;
+            z-index: 101;
+            transition: opacity var(--transition-normal), transform var(--transition-normal);
+            transform-origin: bottom right;
+        }
+
+        .chat-panel.closed {
+            opacity: 0;
+            transform: translateY(20px) scale(0.95);
             pointer-events: none;
         }
 
-        .glow-2 {
-            top: auto;
-            bottom: -20%;
-            left: -10%;
-            background: radial-gradient(circle, rgba(99, 102, 241, 0.1) 0%, transparent 70%);
+        /* Panel Header */
+        .chat-panel-header {
+            background-color: var(--primary);
+            color: white;
+            padding: 14px 18px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            flex-shrink: 0;
+        }
+
+        .header-bot-info {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .header-avatar-wrapper {
+            width: 38px;
+            height: 38px;
+            background-color: rgba(255, 255, 255, 0.15);
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .header-title-container {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .header-title-container h2 {
+            font-size: 14px;
+            font-weight: 700;
+            line-height: 1.2;
+        }
+
+        .header-subtitle {
+            font-size: 11px;
+            color: rgba(255, 255, 255, 0.8);
+            display: flex;
+            align-items: center;
+            gap: 4px;
+            margin-top: 1px;
+        }
+
+        .header-status-dot {
+            width: 6px;
+            height: 6px;
+            background-color: var(--green-online);
+            border-radius: 50%;
+            display: inline-block;
+        }
+
+        .close-btn {
+            background: transparent;
+            border: none;
+            outline: none;
+            color: white;
+            cursor: pointer;
+            opacity: 0.8;
+            transition: opacity var(--transition-fast);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .close-btn:hover {
+            opacity: 1;
+        }
+
+        /* Messages Area */
+        .chat-panel-main {
+            flex: 1;
+            overflow-y: auto;
+            background-color: white;
+            position: relative;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .chat-panel-main::-webkit-scrollbar {
+            width: 4px;
+        }
+
+        .chat-panel-main::-webkit-scrollbar-track {
+            background: transparent;
+        }
+
+        .chat-panel-main::-webkit-scrollbar-thumb {
+            background-color: rgba(156, 163, 175, 0.2);
+            border-radius: 10px;
+        }
+
+        /* Empty Welcome State */
+        .welcome-state {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            padding: 30px 20px;
+            text-align: center;
+            margin: auto 0;
+        }
+
+        .welcome-avatar {
+            width: 60px;
+            height: 60px;
+            background-color: var(--accent-bg);
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-bottom: 16px;
+            color: var(--primary);
+        }
+
+        .welcome-state h3 {
+            font-size: 16px;
+            font-weight: 700;
+            margin-bottom: 6px;
+        }
+
+        .welcome-state p {
+            font-size: 12px;
+            color: var(--text-muted);
+            margin-bottom: 20px;
+            max-width: 220px;
+        }
+
+        .welcome-chips {
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+            width: 100%;
+            max-width: 240px;
+        }
+
+        .chip {
+            background-color: var(--accent-bg);
+            border: none;
+            outline: none;
+            color: var(--primary);
+            padding: 10px 16px;
+            border-radius: 16px;
+            font-size: 12px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all var(--transition-fast);
+            text-align: center;
+        }
+
+        .chip:hover {
+            background-color: var(--primary);
+            color: white;
+            transform: translateY(-1px);
+        }
+
+        /* Message Log Container */
+        .messages-container {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+            padding: 14px;
+        }
+
+        /* Message Item Structure */
+        .message-item {
+            display: flex;
+            align-items: flex-start;
+            gap: 8px;
+            max-width: 88%;
+        }
+
+        .message-item.bot {
+            align-self: flex-start;
+        }
+
+        .message-item.user {
+            align-self: flex-end;
+            flex-direction: row-reverse;
+            max-width: 88%;
+        }
+
+        /* Avatars in Conversation */
+        .msg-avatar {
+            width: 28px;
+            height: 28px;
+            flex-shrink: 0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .msg-avatar.bot-avatar {
+            color: var(--primary);
+        }
+
+        .msg-avatar.user-avatar {
+            background-color: var(--primary);
+            border-radius: 50%;
+            color: white;
+        }
+
+        /* Bubble content container */
+        .msg-bubble-wrapper {
+            display: flex;
+            flex-direction: column;
+            gap: 4px;
+        }
+
+        .msg-bubble {
+            padding: 10px 14px;
+            font-size: 13px;
+            line-height: 1.45;
+            word-break: break-word;
+        }
+
+        .bot .msg-bubble {
+            background-color: white;
+            border: 1px solid var(--border-color);
+            color: var(--text-primary);
+            border-radius: 16px;
+            border-bottom-left-radius: 4px;
+        }
+
+        .user .msg-bubble {
+            background-color: var(--primary);
+            color: white;
+            border-radius: 16px;
+            border-bottom-right-radius: 4px;
+        }
+
+        .msg-timestamp {
+            font-size: 11px;
+            color: var(--text-muted);
+            padding: 0 4px;
+        }
+
+        .user .msg-timestamp {
+            text-align: right;
+        }
+
+        /* Typing Bouncing Dots */
+        .typing-wrapper {
+            display: flex;
+            align-items: flex-start;
+            gap: 8px;
+            padding: 0 14px 14px 14px;
+            align-self: flex-start;
+        }
+
+        .typing-bubble {
+            background-color: white;
+            border: 1px solid var(--border-color);
+            border-radius: 16px;
+            border-bottom-left-radius: 4px;
+            padding: 12px 16px;
+            display: flex;
+            align-items: center;
+            gap: 4px;
+        }
+
+        .typing-dot {
+            width: 7px;
+            height: 7px;
+            background-color: var(--dots-color);
+            border-radius: 50%;
+            animation: typing-bounce 1.4s infinite ease-in-out both;
+        }
+
+        .typing-dot:nth-child(1) {
+            animation-delay: 0s;
+        }
+
+        .typing-dot:nth-child(2) {
+            animation-delay: 0.2s;
+        }
+
+        .typing-dot:nth-child(3) {
+            animation-delay: 0.4s;
+        }
+
+        /* Input Bar Section */
+        .chat-panel-footer {
+            border-top: 1px solid var(--border-color);
+            padding: 10px 12px;
+            background-color: white;
+            flex-shrink: 0;
+        }
+
+        .input-bar-container {
+            display: flex;
+            align-items: flex-end;
+            gap: 8px;
+        }
+
+        .textarea-wrapper {
+            flex: 1;
+            background-color: #F3F4F6;
+            border-radius: 20px;
+            padding: 4px 12px;
+            border: 1px solid transparent;
+            transition: all var(--transition-fast);
+            display: flex;
+            align-items: center;
+        }
+
+        .textarea-wrapper:focus-within {
+            border-color: var(--primary);
+            background-color: white;
+            box-shadow: 0 0 0 2px rgba(99, 102, 241, 0.15);
+        }
+
+        .textarea-wrapper textarea {
+            width: 100%;
+            border: none;
+            outline: none;
+            background: transparent;
+            resize: none;
+            font-family: var(--font-family);
+            font-size: 13px;
+            color: var(--text-primary);
+            line-height: 1.4;
+            max-height: 70px;
+            padding: 6px 0;
+            overflow-y: auto;
+        }
+
+        .textarea-wrapper textarea::placeholder {
+            color: var(--text-muted);
+        }
+
+        .send-button {
+            width: 36px;
+            height: 36px;
+            border-radius: 50%;
+            background-color: var(--primary);
+            border: none;
+            outline: none;
+            color: white;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all var(--transition-fast);
+            flex-shrink: 0;
+        }
+
+        .send-button:hover {
+            transform: scale(1.05);
+            background-color: var(--primary-dark);
+        }
+
+        .send-button:active {
+            transform: scale(0.95);
+        }
+
+        /* Keyframes Animations */
+        @keyframes badge-pulse {
+            0% {
+                box-shadow: 0 0 0 0 rgba(34, 197, 94, 0.7);
+            }
+            70% {
+                box-shadow: 0 0 0 6px rgba(34, 197, 94, 0);
+            }
+            100% {
+                box-shadow: 0 0 0 0 rgba(34, 197, 94, 0);
+            }
+        }
+
+        @keyframes typing-bounce {
+            0%, 80%, 100% {
+                transform: translateY(0);
+            }
+            30% {
+                transform: translateY(-6px);
+            }
+        }
+
+        .hidden {
+            display: none !important;
         }
     </style>
 </head>
 <body>
-    <div class="glow"></div>
-    <div class="glow glow-2"></div>
 
-    <div class="chat-container">
-        <div class="chat-header">
-            <div class="avatar-container">
-                🛡️
+    <!-- MOCK WEBSITE LAYOUT -->
+    <header class="site-header">
+        <div class="site-container" style="display: flex; width: 100%; justify-content: space-between; align-items: center;">
+            <div class="logo">
+                <span class="logo-dot"></span>
+                <span>Atlas Insurance</span>
             </div>
-            <div class="header-info">
-                <h1>Atlas Assistant</h1>
-                <div class="status">
-                    <div class="status-dot"></div> Secured & Online
+            <ul class="nav-links">
+                <li><a href="#plans">Coverage Plans</a></li>
+                <li><a href="#claims">Claims Center</a></li>
+                <li><a href="#about">About Us</a></li>
+            </ul>
+            <a href="#quote" class="cta-btn-nav">Get a Quote</a>
+        </div>
+    </header>
+
+    <main class="site-container">
+        <!-- Hero area -->
+        <section class="hero">
+            <h1>Protecting What Matters Most</h1>
+            <p>Secure your family's future with customizable health, life, and automotive plans. Fast, automated online claim filing backed by our professional 24/7 client care.</p>
+            <div class="hero-actions">
+                <a href="#plans" class="btn-primary">Explore Plans</a>
+                <a href="#support" class="btn-secondary">Talk to Support</a>
+            </div>
+        </section>
+
+        <!-- Features grid -->
+        <section class="features-grid">
+            <div class="feature-card">
+                <div class="card-icon">
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 12h-4l-3 9L9 3l-3 9H2"/></svg>
+                </div>
+                <h3>Health Coverage</h3>
+                <p>Comprehensive and flexible health protection models tailored exactly for your family or corporate group requirements.</p>
+            </div>
+            <div class="feature-card">
+                <div class="card-icon">
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"/></svg>
+                </div>
+                <h3>Life Protection</h3>
+                <p>Provide secure, long-term financial security for the ones you love with robust high-dividend policy structures.</p>
+            </div>
+            <div class="feature-card">
+                <div class="card-icon">
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="22 7 13.5 15.5 8.5 10.5 2 17"></polyline><polyline points="16 7 22 7 22 13"></polyline></svg>
+                </div>
+                <h3>Automated Claims</h3>
+                <p>Submit incident requests online and receive direct verification tracking inside your client panel within minutes.</p>
+            </div>
+        </section>
+    </main>
+
+
+    <!-- FLOATING CHAT WIDGET SYSTEM -->
+    <div class="chat-fab-container">
+        <!-- FLOATING BUTTON (FAB) -->
+        <button class="chat-fab" id="chat-fab" aria-label="Open AI Chat Assistant">
+            <!-- Pulser Badge -->
+            <span class="chat-fab-badge"></span>
+            
+            <!-- Custom Bot SVG (White on dark indigo FAB background, rx=6, eyes, smile, antenna, tail) -->
+            <svg width="32" height="32" viewBox="0 0 40 40" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <!-- Antenna -->
+                <line x1="20" y1="10" x2="20" y2="5" stroke="white" stroke-width="2" stroke-linecap="round"/>
+                <circle cx="20" cy="4" r="1.5" fill="white"/>
+                <!-- Speech tail -->
+                <path d="M14 26L9 31L12 25" stroke="white" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/>
+                <!-- Body (rx=6) with 25% opacity fill -->
+                <rect x="10" y="10" width="20" height="16" rx="6" fill="rgba(255, 255, 255, 0.25)" stroke="white" stroke-width="2"/>
+                <!-- Eyes -->
+                <circle cx="16" cy="17" r="1.5" fill="white"/>
+                <circle cx="24" cy="17" r="1.5" fill="white"/>
+                <!-- Smile -->
+                <path d="M18 21C18 21 19 22.5 20 22.5C21 22.5 22 21 22 21" stroke="white" stroke-width="1.5" stroke-linecap="round"/>
+            </svg>
+        </button>
+
+        <!-- FLOATING CHAT PANEL -->
+        <div class="chat-panel closed" id="chat-panel">
+            <!-- PANEL HEADER -->
+            <header class="chat-panel-header">
+                <div class="header-bot-info">
+                    <!-- Bot Avatar inside Header (White rounded square, rx=6, speech tail) -->
+                    <div class="header-avatar-wrapper">
+                        <svg width="24" height="24" viewBox="0 0 40 40" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <line x1="20" y1="10" x2="20" y2="5" stroke="white" stroke-width="2" stroke-linecap="round"/>
+                            <circle cx="20" cy="4" r="1.5" fill="white"/>
+                            <path d="M14 26L9 31L12 25" stroke="white" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/>
+                            <rect x="10" y="10" width="20" height="16" rx="6" fill="rgba(255, 255, 255, 0.25)" stroke="white" stroke-width="2"/>
+                            <circle cx="16" cy="17" r="1.5" fill="white"/>
+                            <circle cx="24" cy="17" r="1.5" fill="white"/>
+                            <path d="M18 21C18 21 19 22.5 20 22.5C21 22.5 22 21 22 21" stroke="white" stroke-width="1.5" stroke-linecap="round"/>
+                        </svg>
+                    </div>
+                    <div class="header-title-container">
+                        <h2>AI Assistant</h2>
+                        <span class="header-subtitle">
+                            <span class="header-status-dot"></span>
+                            Online
+                        </span>
+                    </div>
+                </div>
+                <!-- Close Button -->
+                <button class="close-btn" id="close-btn" aria-label="Close Chat Panel">
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                        <line x1="18" y1="6" x2="6" y2="18"></line>
+                        <line x1="6" y1="6" x2="18" y2="18"></line>
+                    </svg>
+                </button>
+            </header>
+
+            <!-- CHAT PANEL BODY -->
+            <div class="chat-panel-main" id="chat-panel-main">
+                <!-- Welcome/Empty State Container -->
+                <div class="welcome-state" id="welcome-state">
+                    <!-- Large Bot Avatar (Indigo tinted background, rx=6) -->
+                    <div class="welcome-avatar">
+                        <svg width="38" height="38" viewBox="0 0 40 40" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <line x1="20" y1="10" x2="20" y2="5" stroke="#6366F1" stroke-width="2" stroke-linecap="round"/>
+                            <circle cx="20" cy="4" r="1.5" fill="#6366F1"/>
+                            <path d="M14 26L9 31L12 25" stroke="#6366F1" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/>
+                            <rect x="10" y="10" width="20" height="16" rx="6" fill="#EEF0FD" stroke="#6366F1" stroke-width="2"/>
+                            <circle cx="16" cy="17" r="1.5" fill="#6366F1"/>
+                            <circle cx="24" cy="17" r="1.5" fill="#6366F1"/>
+                            <path d="M18 21C18 21 19 22.5 20 22.5C21 22.5 22 21 22 21" stroke="#6366F1" stroke-width="1.5" stroke-linecap="round"/>
+                        </svg>
+                    </div>
+                    <h3>Hello! 👋 How can I help?</h3>
+                    <p>Ask me anything about our services</p>
+                    
+                    <!-- Chips Container -->
+                    <div class="welcome-chips" id="welcome-chips">
+                        <button class="chip" data-question="What do you offer?">What do you offer?</button>
+                        <button class="chip" data-question="Pricing info">Pricing info</button>
+                        <button class="chip" data-question="Talk to support">Talk to support</button>
+                    </div>
+                </div>
+
+                <!-- Scrollable Messages Area -->
+                <div class="messages-container hidden" id="messages-container">
+                    <!-- Dynamic chat bubbles will go here -->
+                </div>
+
+                <!-- Typing indicator -->
+                <div class="typing-wrapper hidden" id="typing-indicator">
+                    <!-- Small Bot Avatar next to typing indicator -->
+                    <div class="msg-avatar bot-avatar">
+                        <svg width="24" height="24" viewBox="0 0 40 40" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <line x1="20" y1="10" x2="20" y2="5" stroke="#6366F1" stroke-width="2" stroke-linecap="round"/>
+                            <circle cx="20" cy="4" r="1.5" fill="#6366F1"/>
+                            <path d="M14 26L9 31L12 25" stroke="#6366F1" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/>
+                            <rect x="10" y="10" width="20" height="16" rx="6" fill="#EEF0FD" stroke="#6366F1" stroke-width="2"/>
+                            <circle cx="16" cy="17" r="1.5" fill="#6366F1"/>
+                            <circle cx="24" cy="17" r="1.5" fill="#6366F1"/>
+                            <path d="M18 21C18 21 19 22.5 20 22.5C21 22.5 22 21 22 21" stroke="#6366F1" stroke-width="1.5" stroke-linecap="round"/>
+                        </svg>
+                    </div>
+                    <div class="typing-bubble">
+                        <span class="typing-dot"></span>
+                        <span class="typing-dot"></span>
+                        <span class="typing-dot"></span>
+                    </div>
                 </div>
             </div>
-        </div>
 
-        <div id="chat" aria-live="polite">
-            <div class="msg assistant">Welcome to Atlas Insurance. How can I assist you with your health, car, or business insurance today?</div>
-        </div>
-
-        <div id="controls">
-            <input id="input" type="text" placeholder="Ask about plans, claims, or support..." autocomplete="off" />
-            <button id="send" aria-label="Send">
-                <svg class="send-icon" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-                    <path d="M2.01 21L23 12 2.01 3 2 10l15 2-15 2z"/>
-                </svg>
-            </button>
+            <!-- INPUT BAR SECTION -->
+            <footer class="chat-panel-footer">
+                <form id="chat-input-form" onsubmit="event.preventDefault();" class="input-bar-container">
+                    <div class="textarea-wrapper">
+                        <textarea 
+                            id="chat-textarea" 
+                            rows="1" 
+                            placeholder="Type a message..." 
+                            aria-label="Enter chat text"
+                            autocomplete="off"
+                        ></textarea>
+                    </div>
+                    <button type="submit" class="send-button" id="send-button" aria-label="Submit message">
+                        <!-- White Paper Plane SVG -->
+                        <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" style="transform: rotate(45deg) translate(-1px, 1px);">
+                            <line x1="22" y1="2" x2="11" y2="13"></line>
+                            <polygon points="22 2 15 22 11 13 2 9 22 2"></polygon>
+                        </svg>
+                    </button>
+                </form>
+            </footer>
         </div>
     </div>
 
-    <script src="/static/chat.js"></script>
+    <!-- JINJA2 CONTEXT BACKEND CHECK -->
+    <div style="display:none;" id="jinja-request-context">{{ request.url }}</div>
+
+    <!-- CLIENT LOGIC JS -->
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            // DOM Elements
+            const chatFab = document.getElementById('chat-fab');
+            const chatPanel = document.getElementById('chat-panel');
+            const closeBtn = document.getElementById('close-btn');
+            const welcomeState = document.getElementById('welcome-state');
+            const messagesContainer = document.getElementById('messages-container');
+            const typingIndicator = document.getElementById('typing-indicator');
+            const chatTextarea = document.getElementById('chat-textarea');
+            const chatInputForm = document.getElementById('chat-input-form');
+            const chatPanelMain = document.getElementById('chat-panel-main');
+            const welcomeChips = document.getElementById('welcome-chips');
+
+            let conversationStarted = false;
+
+            // Small Bot Avatar Markup for dynamic bubbles
+            const botAvatarMarkup = `
+                <svg width="24" height="24" viewBox="0 0 40 40" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <line x1="20" y1="10" x2="20" y2="5" stroke="#6366F1" stroke-width="2" stroke-linecap="round"/>
+                    <circle cx="20" cy="4" r="1.5" fill="#6366F1"/>
+                    <path d="M14 26L9 31L12 25" stroke="#6366F1" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/>
+                    <rect x="10" y="10" width="20" height="16" rx="6" fill="#EEF0FD" stroke="#6366F1" stroke-width="2"/>
+                    <circle cx="16" cy="17" r="1.5" fill="#6366F1"/>
+                    <circle cx="24" cy="17" r="1.5" fill="#6366F1"/>
+                    <path d="M18 21C18 21 19 22.5 20 22.5C21 22.5 22 21 22 21" stroke="#6366F1" stroke-width="1.5" stroke-linecap="round"/>
+                </svg>
+            `;
+
+            // Small User Person SVG Avatar Markup
+            const userAvatarMarkup = `
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                    <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path>
+                    <circle cx="12" cy="7" r="4"></circle>
+                </svg>
+            `;
+
+            // Open / Close Panel toggles
+            chatFab.addEventListener('click', () => {
+                chatPanel.classList.remove('closed');
+                chatFab.classList.add('hidden');
+                setTimeout(() => {
+                    chatTextarea.focus();
+                }, 100);
+            });
+
+            closeBtn.addEventListener('click', () => {
+                chatPanel.classList.add('closed');
+                chatFab.classList.remove('hidden');
+            });
+
+            // Scroll container to bottom
+            function scrollToBottom() {
+                chatPanelMain.scrollTop = chatPanelMain.scrollHeight;
+            }
+
+            // Format timestamp (e.g. 1:15 PM)
+            function getFormattedTime() {
+                const date = new Date();
+                let hours = date.getHours();
+                let minutes = date.getMinutes();
+                const ampm = hours >= 12 ? 'PM' : 'AM';
+                hours = hours % 12;
+                hours = hours ? hours : 12;
+                minutes = minutes < 10 ? '0' + minutes : minutes;
+                return `${hours}:${minutes} ${ampm}`;
+            }
+
+            // Append bubble in UI
+            function addMessage(text, sender) {
+                // If it is the first message, transition out of welcome state
+                if (!conversationStarted) {
+                    conversationStarted = true;
+                    welcomeState.classList.add('hidden');
+                    messagesContainer.classList.remove('hidden');
+                }
+
+                const item = document.createElement('div');
+                item.className = `message-item ${sender}`;
+
+                // Avatar
+                const avatar = document.createElement('div');
+                avatar.className = `msg-avatar ${sender}-avatar`;
+                avatar.innerHTML = sender === 'bot' ? botAvatarMarkup : userAvatarMarkup;
+
+                // Bubble wrapper (bubble + timestamp)
+                const wrapper = document.createElement('div');
+                wrapper.className = 'msg-bubble-wrapper';
+
+                const bubble = document.createElement('div');
+                bubble.className = 'msg-bubble';
+                bubble.textContent = text;
+
+                const timestamp = document.createElement('span');
+                timestamp.className = 'msg-timestamp';
+                timestamp.textContent = getFormattedTime();
+
+                wrapper.appendChild(bubble);
+                wrapper.appendChild(timestamp);
+
+                item.appendChild(avatar);
+                item.appendChild(wrapper);
+
+                messagesContainer.appendChild(item);
+                scrollToBottom();
+            }
+
+            // Typing Bouncing Dots
+            function showTypingIndicator() {
+                typingIndicator.classList.remove('hidden');
+                scrollToBottom();
+            }
+
+            function removeTypingIndicator() {
+                typingIndicator.classList.add('hidden');
+            }
+
+            // Send Prompt Main logic
+            async function sendMessage(text) {
+                const promptVal = text.trim();
+                if (!promptVal) return;
+
+                // Render User bubble
+                addMessage(promptVal, 'user');
+
+                // Clear input textarea and reset its auto-height
+                chatTextarea.value = '';
+                chatTextarea.style.height = 'auto';
+
+                // Display typing state
+                showTypingIndicator();
+
+                try {
+                    const origin = window.location.origin;
+                    const apiUrl = (origin.startsWith('file://') || origin.includes(':3000') || !origin.includes(':8000'))
+                        ? 'http://127.0.0.1:8000/api/chat'
+                        : '/api/chat';
+
+                    const response = await fetch(apiUrl, {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json'
+                        },
+                        body: JSON.stringify({ text: promptVal })
+                    });
+
+                    if (!response.ok) {
+                        throw new Error('API server returned error status');
+                    }
+
+                    const data = await response.json();
+                    removeTypingIndicator();
+                    addMessage(data.reply, 'bot');
+                } catch (error) {
+                    console.error('Error contacting chat endpoint:', error);
+                    removeTypingIndicator();
+                    addMessage("Sorry, something went wrong. Please check your network connection and try again.", 'bot');
+                }
+            }
+
+            // Textarea auto resizing
+            chatTextarea.addEventListener('input', function() {
+                this.style.height = 'auto';
+                this.style.height = (this.scrollHeight) + 'px';
+            });
+
+            // Textarea Keydown (Enter to send, Shift+Enter for newline)
+            chatTextarea.addEventListener('keydown', (e) => {
+                if (e.key === 'Enter' && !e.shiftKey) {
+                    e.preventDefault();
+                    chatInputForm.dispatchEvent(new Event('submit'));
+                }
+            });
+
+            // Form submit trigger
+            chatInputForm.addEventListener('submit', (e) => {
+                e.preventDefault();
+                sendMessage(chatTextarea.value);
+            });
+
+            // Suggested chips listener
+            welcomeChips.addEventListener('click', (e) => {
+                const chip = e.target.closest('.chip');
+                if (!chip) return;
+
+                const question = chip.getAttribute('data-question');
+                if (question) {
+                    sendMessage(question);
+                }
+            });
+        });
+    </script>
 </body>
 </html>
