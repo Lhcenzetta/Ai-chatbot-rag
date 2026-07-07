@@ -1,12 +1,18 @@
+# Backend
 fastapi
 uvicorn
-langchain
-openai
-faiss-cpu
-pypdf
-
-# UI templates
 jinja2
+python-dotenv
 
-# Ollama integration (used by main.py)
-langchain-ollama
+# RAG stack
+langchain
+langchain-community
+langchain-chroma
+langchain-huggingface
+langchain-text-splitters
+langchain-ollama          # local LLM (default provider)
+sentence-transformers     # multilingual embeddings
+pypdf                     # PDF loading in ingest.py
+
+# Optional: only needed when LLM_PROVIDER=api (OpenAI-compatible endpoints)
+openai

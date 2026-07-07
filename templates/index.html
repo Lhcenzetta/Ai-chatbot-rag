@@ -516,6 +516,63 @@
             border-bottom-right-radius: 4px;
         }
 
+        /* Rich formatting inside bot bubbles (lists, links, emphasis) */
+        .bot .msg-bubble p {
+            margin: 0 0 8px 0;
+        }
+
+        .bot .msg-bubble p:last-child {
+            margin-bottom: 0;
+        }
+
+        .bot .msg-bubble strong {
+            font-weight: 700;
+            color: var(--text-primary);
+        }
+
+        .bot .msg-bubble ul,
+        .bot .msg-bubble ol {
+            margin: 6px 0;
+            padding-left: 18px;
+            display: flex;
+            flex-direction: column;
+            gap: 4px;
+        }
+
+        .bot .msg-bubble li {
+            line-height: 1.4;
+        }
+
+        .bot .msg-bubble ul li::marker {
+            color: var(--primary);
+        }
+
+        .bot .msg-bubble ol li::marker {
+            color: var(--primary);
+            font-weight: 600;
+        }
+
+        .bot .msg-bubble a {
+            color: var(--primary-dark);
+            font-weight: 600;
+            text-decoration: none;
+            border-bottom: 1px solid rgba(99, 102, 241, 0.3);
+            word-break: break-all;
+        }
+
+        .bot .msg-bubble a:hover {
+            border-bottom-color: var(--primary-dark);
+        }
+
+        .bot .msg-bubble code {
+            background-color: var(--accent-bg);
+            color: var(--primary-dark);
+            padding: 1px 6px;
+            border-radius: 6px;
+            font-size: 12px;
+            font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
+        }
+
         .msg-timestamp {
             font-size: 11px;
             color: var(--text-muted);
@@ -803,9 +860,10 @@
                     
                     <!-- Chips Container -->
                     <div class="welcome-chips" id="welcome-chips">
-                        <button class="chip" data-question="What do you offer?">What do you offer?</button>
-                        <button class="chip" data-question="Pricing info">Pricing info</button>
-                        <button class="chip" data-question="Talk to support">Talk to support</button>
+                        <button class="chip" data-question="What insurance services do you offer?">What services do you offer?</button>
+                        <button class="chip" data-question="How much do your plans cost?">Pricing &amp; plans</button>
+                        <button class="chip" data-question="How do I file a claim?">How to file a claim</button>
+                        <button class="chip" data-question="How can I contact support?">Contact support</button>
                     </div>
                 </div>
 
@@ -915,6 +973,73 @@
                 chatFab.classList.remove('hidden');
             });
 
+            // Escape HTML so model output can never inject markup
+            function escapeHtml(str) {
+                const div = document.createElement('div');
+                div.textContent = str;
+                return div.innerHTML;
+            }
+
+            // Turn inline markdown-ish syntax + contact info into safe HTML
+            function formatInline(text) {
+                let out = escapeHtml(text);
+                // **bold**
+                out = out.replace(/\*\*([^*]+)\*\*/g, '<strong>$1</strong>');
+                // `code`
+                out = out.replace(/`([^`]+)`/g, '<code>$1</code>');
+                // Markdown links [label](url)
+                out = out.replace(/\[([^\]]+)\]\((https?:\/\/[^\s)]+)\)/g, '<a href="$2" target="_blank" rel="noopener">$1</a>');
+                // Bare emails
+                out = out.replace(/([a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,})/g, '<a href="mailto:$1">$1</a>');
+                // Phone numbers (e.g. +212 600 000 000)
+                out = out.replace(/(\+?\d[\d\s-]{7,}\d)/g, (m) => `<a href="tel:${m.replace(/\s/g, '')}">${m}</a>`);
+                // Bare URLs (skip ones already inside an href)
+                out = out.replace(/(^|[^"'>])(https?:\/\/[^\s<]+)/g, '$1<a href="$2" target="_blank" rel="noopener">$2</a>');
+                return out;
+            }
+
+            // Convert a bot reply (plain text w/ lists & paragraphs) to rich HTML
+            function formatBotContent(text) {
+                const lines = text.replace(/\r\n/g, '\n').split('\n');
+                let html = '';
+                let listType = null;      // 'ul' | 'ol' | null
+                let paragraph = [];
+
+                const flushParagraph = () => {
+                    if (paragraph.length) {
+                        html += `<p>${formatInline(paragraph.join(' '))}</p>`;
+                        paragraph = [];
+                    }
+                };
+                const closeList = () => {
+                    if (listType) { html += `</${listType}>`; listType = null; }
+                };
+
+                for (const raw of lines) {
+                    const line = raw.trim();
+                    if (!line) { flushParagraph(); closeList(); continue; }
+
+                    const ordered = line.match(/^(\d+)[.)]\s+(.*)$/);
+                    const bullet = line.match(/^[-*•]\s+(.*)$/);
+
+                    if (ordered) {
+                        flushParagraph();
+                        if (listType !== 'ol') { closeList(); html += '<ol>'; listType = 'ol'; }
+                        html += `<li>${formatInline(ordered[2])}</li>`;
+                    } else if (bullet) {
+                        flushParagraph();
+                        if (listType !== 'ul') { closeList(); html += '<ul>'; listType = 'ul'; }
+                        html += `<li>${formatInline(bullet[1])}</li>`;
+                    } else {
+                        closeList();
+                        paragraph.push(line);
+                    }
+                }
+                flushParagraph();
+                closeList();
+                return html || `<p>${formatInline(text)}</p>`;
+            }
+
             // Scroll container to bottom
             function scrollToBottom() {
                 chatPanelMain.scrollTop = chatPanelMain.scrollHeight;
@@ -955,7 +1080,13 @@
 
                 const bubble = document.createElement('div');
                 bubble.className = 'msg-bubble';
-                bubble.textContent = text;
+                // Bot replies get rich formatting (lists, links, emphasis);
+                // user input stays plain text.
+                if (sender === 'bot') {
+                    bubble.innerHTML = formatBotContent(text);
+                } else {
+                    bubble.textContent = text;
+                }
 
                 const timestamp = document.createElement('span');
                 timestamp.className = 'msg-timestamp';

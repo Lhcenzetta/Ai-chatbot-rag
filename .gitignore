@@ -1,0 +1,18 @@
+# Secrets & local config
+.env
+
+# Vector index (rebuild with `python ingest.py`)
+chroma_db/
+
+# Python
+venv/
+__pycache__/
+*.pyc
+
+# Node / Vite
+frontend/node_modules/
+frontend/dist/
+frontend/.next/
+
+# OS / editor
+.DS_Store
